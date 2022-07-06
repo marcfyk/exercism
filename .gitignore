@@ -32,6 +32,9 @@ python/*/*_test.py
 #rust
 rust/*/*
 !rust/*/src
+rust/*/target
+rust/*/Cargo.lock
+
 
 #scala
 scala/*/*
