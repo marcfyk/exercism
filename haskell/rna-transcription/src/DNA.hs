@@ -1,18 +1,17 @@
 module DNA (toRNA) where
 
-getNucleotide :: Char -> Either Char Char
-getNucleotide n = case n of 'A'       -> Right 'U'
-                            'C'       -> Right 'G'
-                            'G'       -> Right 'C'
-                            'T'       -> Right 'A'
-                            otherwise -> Left n
+replace :: Char -> Either Char Char
+replace 'G' = Right 'C'
+replace 'C' = Right 'G'
+replace 'T' = Right 'A'
+replace 'A' = Right 'U'
+replace n = Left n
 
 toRNA :: String -> Either Char String
-toRNA xs =
-  foldr
-  (\c acc -> let n = getNucleotide c
-             in case n of Left invalidC -> Left invalidC
-                          Right toAdd   -> case acc of Left err    -> Left err
-                                                       Right value -> Right (toAdd:value))
-  (Right "")
-  xs
+toRNA = foldr (merge . replace) (Right "")
+    where
+        merge _ (Left err) = Left err
+        merge (Left err) (Right _) = Left err
+        merge (Right result) (Right acc) = Right (result:acc)
+
+

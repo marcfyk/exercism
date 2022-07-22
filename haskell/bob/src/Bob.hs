@@ -1,26 +1,20 @@
 module Bob (responseFor) where
 
-import qualified Data.Char
-import qualified Data.List
-
-trim :: String -> String
-trim = Data.List.dropWhile Data.Char.isSpace . Data.List.dropWhileEnd Data.Char.isSpace
+import qualified Data.Text as T
+import Data.Char (isUpper, isAlpha, isSpace)
 
 responseFor :: String -> String
 responseFor xs
-  | isEmpty             = "Fine. Be that way!"
-  | isUpperCaseQuestion = "Calm down, I know what I'm doing!"
-  | isUpperCase         = "Whoa, chill out!"
-  | isQuestion          = "Sure."
-  | otherwise           = "Whatever."
-  where
-    text = trim xs
-    isEmpty = null text
-    isQuestion = Data.List.isSuffixOf "?" text
-    isUpperCase = (not . null) letters && all Data.Char.isUpper letters
-      where letters = filter Data.Char.isLetter text
-    isUpperCaseQuestion = isUpperCase && isQuestion
-    
-
-
-
+    | isQuestion && isShouting = "Calm down, I know what I'm doing!"
+    | isShouting = "Whoa, chill out!"
+    | isQuestion = "Sure."
+    | isEmpty = "Fine. Be that way!"
+    | otherwise = "Whatever."
+    where
+        text = T.dropWhileEnd isSpace $ T.dropWhile isSpace $ T.pack xs
+        isEmpty = T.null text
+        isQuestion = T.isSuffixOf (T.pack "?") text
+        isShouting = isAllUppercase
+            where
+                letters = T.filter isAlpha text
+                isAllUppercase = T.length letters > 0 && T.all isUpper letters

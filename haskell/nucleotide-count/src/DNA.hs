@@ -1,23 +1,20 @@
 module DNA (nucleotideCounts, Nucleotide(..)) where
 
-import Data.Map (Map, fromList, insertWith)
+import Data.Map (Map, empty, insertWith)
 
 data Nucleotide = A | C | G | T deriving (Eq, Ord, Show)
 
-
-getNucleotide :: Char -> Either Char Nucleotide
-getNucleotide n = case n of 'A' -> Right A
-                            'C' -> Right C
-                            'G' -> Right G
-                            'T' -> Right T
-                            otherwise -> Left n
-
 nucleotideCounts :: String -> Either String (Map Nucleotide Int)
-nucleotideCounts xs =
-  foldr
-  (\c acc -> case c of Left err  -> Left "error"
-                       Right key -> case acc of Left invalidAcc -> Left "error"
-                                                Right prevMap   -> Right $ insertWith (+) key 1 prevMap)
-  (Right $ fromList [(A, 0), (C, 0), (G, 0), (T, 0)])
-  $ map getNucleotide xs
+nucleotideCounts = foldr (merge . getNucleotide) (Right Data.Map.empty)
+    where
+        getNucleotide 'A' = Right A
+        getNucleotide 'C' = Right C
+        getNucleotide 'G' = Right G
+        getNucleotide 'T' = Right T
+        getNucleotide _ = Left ""
+        updateMap key = insertWith (+) key 1
+        merge _ (Left err) = Left err
+        merge (Left err) _ = Left err
+        merge (Right n) (Right m) = Right $ updateMap n m
+
 

@@ -1,15 +1,7 @@
 module Pangram (isPangram) where
-
-import qualified Data.List
-import qualified Data.Char
-
-getDistinctLetters :: String -> Int
-getDistinctLetters = length
-  . filter (>='a')
-  . filter (<='z')
-  . Data.List.nub 
-  . map Data.Char.toLower
+import Data.Char (isLetter, toLower, isAscii)
+import Data.List (nub)
 
 isPangram :: String -> Bool
-isPangram text = length ['a'..'z'] == getDistinctLetters text
-  
+isPangram text = 26 == length distinctLetters
+    where distinctLetters = nub [toLower c | c <- text, isLetter c, isAscii c]

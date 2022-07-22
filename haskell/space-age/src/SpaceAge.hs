@@ -9,24 +9,18 @@ data Planet = Mercury
             | Uranus
             | Neptune
 
+earthSecondsAYear :: Float
+earthSecondsAYear = 31557600
 
-
-planetFactor :: Planet -> Float
-planetFactor planet = case planet of
-    Mercury -> 0.2408467
-    Venus   -> 0.61519726
-    Earth   -> 1
-    Mars    -> 1.8808158
-    Jupiter -> 11.862615
-    Saturn  -> 29.447498
-    Uranus  -> 84.016846
-    Neptune -> 164.79132
-
-toSeconds :: Float -> Float -> Float
-toSeconds seconds weight = seconds / weight
-
-secondsToYears :: Float -> Float
-secondsToYears seconds = seconds / 31557600
-     
 ageOn :: Planet -> Float -> Float
-ageOn planet seconds = secondsToYears $ toSeconds seconds $ planetFactor planet
+ageOn planet second = second / factor planet / earthSecondsAYear
+
+factor :: Planet -> Float
+factor Mercury = 0.2408467
+factor Venus = 0.61519726
+factor Earth = 1
+factor Mars = 1.8808158
+factor Jupiter = 11.862615
+factor Saturn = 29.447498
+factor Uranus = 84.016846
+factor Neptune = 164.79132
