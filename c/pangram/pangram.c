@@ -1,4 +1,5 @@
 #include "pangram.h"
+#include <ctype.h>
 #include <stddef.h>
 
 bool is_pangram(const char *sentence) {
@@ -8,11 +9,11 @@ bool is_pangram(const char *sentence) {
   bool set[26] = {0};
   for (int i = 0; sentence[i] != '\0'; ++i) {
     const char c = sentence[i];
-    if ('A' <= c && c <= 'Z') {
-      set[c - 'A'] = true;
-    } else if ('a' <= c && c <= 'z') {
-      set[c - 'a'] = true;
+    int offset = isupper(c) ? 'A' : islower(c) ? 'a' : -1;
+    if (offset == -1) {
+      continue;
     }
+    set[c - offset] = true;
   }
   for (int i = 0; i < 26; ++i) {
     if (!set[i]) {
