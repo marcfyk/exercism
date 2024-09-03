@@ -2,9 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-char transcribe(char nucleotide);
-
-char transcribe(char nucleotide) {
+static char transcribe(char nucleotide) {
   switch (nucleotide) {
   case 'G':
     return 'C';
