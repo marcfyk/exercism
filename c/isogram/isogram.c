@@ -1,4 +1,5 @@
 #include "isogram.h"
+#include <ctype.h>
 #include <stddef.h>
 
 bool is_isogram(const char phrase[]) {
@@ -8,7 +9,7 @@ bool is_isogram(const char phrase[]) {
   bool set[26] = {0};
   for (int i = 0; phrase[i] != '\0'; ++i) {
     char c = phrase[i];
-    int offset = 'A' <= c && c <= 'Z' ? 'A' : 'a' <= c && c <= 'z' ? 'a' : -1;
+    int offset = isupper(c) ? 'A' : islower(c) ? 'a' : -1;
     if (offset == -1) {
       continue;
     }
