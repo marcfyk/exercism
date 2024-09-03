@@ -5,34 +5,18 @@
 #include <stdlib.h>
 #include <string.h>
 
-static int count_digits(int n) {
-  int count = 0;
-  do {
-    ++count;
+static int reverse_digits(int n) {
+  int reversed = 0;
+  while (n != 0) {
+    reversed = reversed * 10 + n % 10;
     n /= 10;
-  } while (n > 0);
-  return count;
+  }
+  return reversed;
 }
 
 // verifies if n is a palindrome using int manipulation instead of
 // allocating memory and comparing the string representation of n.
-static bool is_palindrome(int n) {
-  if (n < 0) {
-    return false;
-  }
-  if (n < 10) {
-    return true;
-  }
-  int digits = count_digits(n);
-  for (int i = 0; i < digits / 2; ++i) {
-    int left = (n / (int)pow(10, digits - i - 1)) % 10;
-    int right = (n % (int)pow(10, i + 1)) / pow(10, i);
-    if (left != right) {
-      return false;
-    }
-  }
-  return true;
-}
+static bool is_palindrome(int n) { return reverse_digits(n) == n; }
 
 static factor_t *alloc_factor(int a, int b, factor_t *next) {
   factor_t *f = malloc(sizeof(factor_t));
