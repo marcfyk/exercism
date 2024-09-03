@@ -8,12 +8,7 @@ bool is_isogram(const char phrase[]) {
   bool set[26] = {0};
   for (int i = 0; phrase[i] != '\0'; ++i) {
     char c = phrase[i];
-    int offset = -1;
-    if ('A' <= c && c <= 'Z') {
-      offset = 'A';
-    } else if ('a' <= c && c <= 'z') {
-      offset = 'a';
-    }
+    int offset = 'A' <= c && c <= 'Z' ? 'A' : 'a' <= c && c <= 'z' ? 'a' : -1;
     if (offset == -1) {
       continue;
     }
