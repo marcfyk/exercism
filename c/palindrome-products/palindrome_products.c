@@ -14,38 +14,6 @@ static int count_digits(int n) {
   return count;
 }
 
-static int count_leading_zeros(int n, int length) {
-  int pad = pow(10, length - 1);
-  int count = 0;
-  while (pad > n) {
-    pad /= 10;
-    ++count;
-  }
-  return count;
-}
-
-static int count_trailing_zeros(int n) {
-  if (n == 0) {
-    return 1;
-  }
-  int count = 0;
-  while (n > 0 && n % 10 == 0) {
-    ++count;
-    n /= 10;
-  }
-  return count;
-}
-
-static int reverse(int n) {
-  int reversed = 0;
-  do {
-    reversed *= 10;
-    reversed += n % 10;
-    n /= 10;
-  } while (n > 0);
-  return reversed;
-}
-
 // verifies if n is a palindrome using int manipulation instead of
 // allocating memory and comparing the string representation of n.
 static bool is_palindrome(int n) {
@@ -56,22 +24,14 @@ static bool is_palindrome(int n) {
     return true;
   }
   int digits = count_digits(n);
-  int left, right;
-  int exp = digits / 2;
-  if (digits % 2 == 0) {
-    int mask = pow(10, exp);
-    left = n / mask;
-    right = n % mask;
-  } else {
-    left = n / pow(10, exp + 1);
-    right = n % (int)pow(10, exp);
+  for (int i = 0; i < digits / 2; ++i) {
+    int left = (n / (int)pow(10, digits - i - 1)) % 10;
+    int right = (n % (int)pow(10, i + 1)) / pow(10, i);
+    if (left != right) {
+      return false;
+    }
   }
-  int trailing = count_trailing_zeros(left);
-  int leading = count_leading_zeros(right, exp);
-  if (trailing != leading) {
-    return false;
-  }
-  return reverse(left / pow(10, trailing)) == right;
+  return true;
 }
 
 static factor_t *alloc_factor(int a, int b, factor_t *next) {
@@ -99,14 +59,24 @@ static factor_t *get_factors(int n, int from, int to) {
   return f;
 }
 
+static void errorInvalidInput(char *error, int from, int to) {
+  sprintf(error, "invalid input: min is %d and max is %d", from, to);
+}
+
+static void errorNoPalindromeFound(char *error, int from, int to) {
+  sprintf(error, "no palindrome with factors in the range %d to %d", from, to);
+}
+
 product_t *get_palindrome_product(int from, int to) {
   product_t *p = malloc(sizeof(product_t));
-  p->smallest = to * to + 1;
-  p->largest = from * from - 1;
+  const int max_value = to * to;
+  const int min_value = from * from;
+  p->smallest = max_value + 1;
+  p->largest = min_value - 1;
   p->factors_sm = NULL;
   p->factors_lg = NULL;
   if (from > to) {
-    sprintf(p->error, "invalid input: min is %d and max is %d", from, to);
+    errorInvalidInput(p->error, from, to);
     return p;
   }
   for (int i = from; i <= to; ++i) {
@@ -117,9 +87,8 @@ product_t *get_palindrome_product(int from, int to) {
       }
     }
   }
-  if (p->smallest == to * to + 1) {
-    sprintf(p->error, "no palindrome with factors in the range %d to %d", from,
-            to);
+  if (p->smallest > max_value) {
+    errorNoPalindromeFound(p->error, from, to);
     return p;
   }
   for (int i = to; i >= from; --i) {
@@ -130,9 +99,8 @@ product_t *get_palindrome_product(int from, int to) {
       }
     }
   }
-  if (p->largest == from * from - 1) {
-    sprintf(p->error, "no palindrome with factors in the range %d to %d", from,
-            to);
+  if (p->largest < min_value) {
+    errorNoPalindromeFound(p->error, from, to);
     return p;
   }
   p->factors_sm = get_factors(p->smallest, from, to);
