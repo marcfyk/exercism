@@ -12,3 +12,4 @@ jq/**/HELP.md
 jq/**/bats-extra.bash
 jq/**/bats-jq.bash
 jq/**/test-*.bats
+jq/**/.exercism/
