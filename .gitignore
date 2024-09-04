@@ -6,3 +6,9 @@ c/**/README.md
 c/**/makefile
 c/**/test_*.c
 c/**/test-framework/
+
+jq/**/README.md
+jq/**/HELP.md
+jq/**/bats-extra.bash
+jq/**/bats-jq.bash
+jq/**/test-*.bats
