@@ -9,7 +9,9 @@ c/**/test-framework/
 
 jq/**/README.md
 jq/**/HELP.md
+jq/**/HINTS.md
 jq/**/bats-extra.bash
 jq/**/bats-jq.bash
 jq/**/test-*.bats
 jq/**/.exercism/
+jq/**/*.json
