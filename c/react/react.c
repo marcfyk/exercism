@@ -5,6 +5,9 @@ static void trigger_callbacks(cell_t *c);
 
 struct reactor *create_reactor(void) {
   reactor_t *r = malloc(sizeof(reactor_t));
+  if (r == NULL) {
+    exit(1);
+  }
   r->size = 0;
   return r;
 }
@@ -23,6 +26,9 @@ void destroy_reactor(reactor_t *r) {
 
 cell_t *create_input_cell(reactor_t *r, int initial_value) {
   cell_t *cell = malloc(sizeof(cell_t));
+  if (cell == NULL) {
+    exit(1);
+  }
   cell->type = CellTypeInput;
   cell->value = initial_value;
   cell->callbacks_size = 0;
@@ -33,6 +39,9 @@ cell_t *create_input_cell(reactor_t *r, int initial_value) {
 
 cell_t *create_compute1_cell(reactor_t *r, cell_t *c, compute1 f) {
   cell_t *cell = malloc(sizeof(cell_t));
+  if (cell == NULL) {
+    exit(1);
+  }
   cell->type = CellTypeCompute1;
   cell->value = f(get_cell_value(c));
   cell->args[0] = c;
@@ -46,6 +55,9 @@ cell_t *create_compute1_cell(reactor_t *r, cell_t *c, compute1 f) {
 
 cell_t *create_compute2_cell(reactor_t *r, cell_t *c1, cell_t *c2, compute2 f) {
   cell_t *cell = malloc(sizeof(cell_t));
+  if (cell == NULL) {
+    exit(1);
+  }
   cell->type = CellTypeCompute2;
   cell->value = f(get_cell_value(c1), get_cell_value(c2));
   cell->args[0] = c1;
