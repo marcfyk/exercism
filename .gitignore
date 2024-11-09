@@ -15,3 +15,12 @@ jq/**/bats-jq.bash
 jq/**/test-*.bats
 jq/**/.exercism/
 jq/**/*.json
+
+ocaml/**/README.md
+ocaml/**/HELP.md
+ocaml/**/Makefile
+ocaml/**/dune
+ocaml/**/dune-project
+ocaml/**/test.ml
+ocaml/**/.exercism/
+ocaml/**/_build/
