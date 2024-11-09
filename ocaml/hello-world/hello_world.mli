@@ -1,4 +1,4 @@
 (*
    Returns "Hello, World!"
 *)
-val hello: string
+val hello : string
