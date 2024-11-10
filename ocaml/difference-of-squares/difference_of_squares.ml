@@ -1,5 +1,5 @@
 let square_of_sum n =
-  let range = List.init n (fun x -> x + 1) in
+  let range = List.init n (( + ) 1) in
   let sum = List.fold_left ( + ) 0 range in
   sum * sum
 
